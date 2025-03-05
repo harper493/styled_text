@@ -1,14 +1,14 @@
 from __future__ import annotations
-from enum import Enum, Flag
-
+from enum import Enum
+import sys
+import os
 
 class StyledText:
 
-    class RenderStyle(Enum):
-        plain = 0,
-        iso6429 = 1
+    render_style_plain = 0
+    render_style_iso6429 = 1
 
-    render_style = 1
+    render_style = 1 if sys.stdout.isatty() else 0
 
     color_map = {
         'none' : 0,
@@ -141,12 +141,12 @@ class StyledText:
 
     def render(self) -> str:
         match StyledText.render_style:
-            case StyledText.RenderStyle.plain:
-                return str(self)
-            case StyledText.RenderStyle.iso6429:
+            case 0:
+                return self.get_text()
+            case 1:
                 return self.render_iso6429()
             case _:
-                return str(self)
+                return self.get_text()
 
     def render_iso6429(self) -> str:
         esc = '\u001b'
@@ -182,14 +182,13 @@ class StyledText:
 
     @staticmethod
     def set_render_style_plain() -> None:
-        StyledText.render_style = StyledText.RenderStyle.plain
+        StyledText.render_style = 0
 
     @staticmethod
     def set_render_style_iso6429() -> None:
-        StyledText.render_style = StyledText.RenderStyle.iso6429
+        StyledText.render_style = 1
 
 if __name__=='__main__':
-    StyledText.set_render_style_iso6429()
     print(StyledText('normal'))
     print(StyledText('red', color='red'))
     print(StyledText('green underline', color='green', style='underline'))
