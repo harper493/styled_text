@@ -1,5 +1,6 @@
 from __future__ import annotations
 from enum import Enum
+from typing import Iterable
 import sys
 import os
 
@@ -49,12 +50,12 @@ class StyledText:
         self.background = background
         self.style = style
         self.size = size
+        self.subtexts: list[StyledText] = []
         if isinstance(text, str):
             self.text = text
-            self.subtexts = []
         elif isinstance(text, StyledText):
             self.text = ''
-            self.subtexts: list[StyledText]  = [ text ]
+            self.subtexts = [ text ]
         else:
             self.text = ''
             self.subtexts = [ s for s in text ]
@@ -175,11 +176,11 @@ class StyledText:
         #print(' '.join([ f"'{b}'" if b!=esc else 'ESC' for b in result]))
         return result
 
-    def get_color(self, c: str) -> str:
-        return StyledText.color_map.get(c, None) or int(c, default=StyledText.color_map['n one'])
+    def get_color(self, c: str) -> int:
+        return StyledText.color_map.get(c, 0) or int(c, default=StyledText.color_map['n one'])
 
-    def get_style(self, s:str) -> str:
-        return StyledText.style_map.get(s, None) or int(s, default=StyledText.style_map['none'])
+    def get_style(self, s:str) -> int:
+        return StyledText.style_map.get(s, 0) or int(s, default=StyledText.style_map['none'])
 
     @staticmethod
     def set_render_style_plain() -> None:
