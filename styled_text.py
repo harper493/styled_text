@@ -15,6 +15,7 @@ class StyledText:
         'black' : 232,
         'red' : 9,
         'green' : 40,
+        'dark_green' : 34,
         'yellow' : 11,
         'blue' : 20,
         'magenta' : 90,
