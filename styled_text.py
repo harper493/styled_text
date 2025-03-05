@@ -81,7 +81,7 @@ class StyledText:
             self.subtexts.append(other)
         return self
 
-    def __plus__(self, other: str|StyledText) -> StyledText:
+    def __add__(self, other: str|StyledText) -> StyledText:
         result = self.copy()
         result += other
         return result
@@ -195,9 +195,9 @@ if __name__=='__main__':
     print(StyledText('green underline', color='green', style='underline'))
     print(StyledText('blue italic underline', color='blue', style=('italic', 'underline')))
     s1 = StyledText('magenta underline', color='magenta', style='underline')
-    s2 = s1.append(' orange underline', color='orange')
-    print(s2.get_text(), s2)
-    s3 = s1.append(' orange italic', color='orange', style='italic')
+    s1.attach(' orange underline', color='orange')
+    print(s1.get_text(), s1)
+    s3 = s1.attach(' orange italic', color='orange', style='italic')
     print(s3)
     s4 = StyledText((StyledText('pink', color='pink'), StyledText('bold', style='bold')))
     print(s4)
@@ -205,7 +205,7 @@ if __name__=='__main__':
                      StyledText((StyledText('bold', style='bold'),
                                 StyledText('brown inverted', color='brown', style='inverted')))))
     print(s5)
-    print(s5.get_text())
+    print('as text: ', s5.get_text())
     s6 = StyledText('cyan', color='pink')
     s6.override(color='cyan')
     print(s6)
@@ -213,8 +213,10 @@ if __name__=='__main__':
     s7.underride(color='orange', style='bold')
     print(s7)
     print(StyledText('orange on grey', color='orange', background='grey'))
-    s8 = StyledText('green', color='green').append('blue', color='blue').append('green')
+    s8 = StyledText('green', color='green').attach('blue', color='blue').attach('green')
     print(s8)
+    s9 = StyledText('pink bold', color='pink', style='bold') + StyledText('normal')
+    print(s9)
     print(StyledText('normal'))
     
         
