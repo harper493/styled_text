@@ -177,10 +177,19 @@ class StyledText:
         return result
 
     def get_color(self, c: str) -> int:
-        return StyledText.color_map.get(c, 0) or int(c, default=StyledText.color_map['n one'])
+        return self._get_from_map(StyledText.color_map, c, 'none')
 
     def get_style(self, s:str) -> int:
-        return StyledText.style_map.get(s, 0) or int(s, default=StyledText.style_map['none'])
+        return self._get_from_map(StyledText.style_map, s, 'none')
+
+    def _get_from_map(self, map: dict[str, int], s: str, dflt: str) -> int:
+        try:
+            return map[s]
+        except KeyError:
+            try:
+                return int(s)
+            except ValueError:
+                return map[dflt]
 
     @staticmethod
     def set_render_style_plain() -> None:
